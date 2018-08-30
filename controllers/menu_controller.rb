@@ -1,21 +1,26 @@
 require_relative '../models/address_book'
-
 class MenuController
   attr_reader :address_book
 
   def initialize
     @address_book = AddressBook.new
+    @menu_options = { 
+                        "1": "View all entries",
+                        "2": "Create an entry",
+                        "3": "Search for an entry",
+                        "4": "Import entries from a CSV",
+                        "5": "Create new menu option",
+                        "6": "Exit"
+                        
+                    }
   end
 
   def main_menu
-        puts "main Menu - #{address_book.entries.count} entries"
-        puts "1 - View all entries"
-        puts "2 - View entry by number"
-        puts "3 - Create an entry"
-        puts "4 - Search for an entry"
-        puts "5 - Import entries from a CSV"
-        puts "6 - Exit"
-        print "Enter your selection: "
+    puts "Main Menu - #{address_book.entries.count} entries"
+    @menu_options.each do |key, value|
+        puts "#{key} -  #{value}"
+    end
+    print "Enter your selection: "
 
         selection = gets.to_i
 
@@ -31,12 +36,18 @@ class MenuController
         when 3
             system "clear"
             search_entries
+            view_entry_number 
             main_menu
         when 4
             system "clear"
             read_csv
             main_menu
+
         when 5
+            system "clear"
+            add_menu_option
+            main_menu  
+        when 6
             puts "Good-bye!"
             # #8
             exit(0)
@@ -49,6 +60,18 @@ class MenuController
         
     end    
 
+   def add_menu_option
+        puts "Enter new menu option"
+        @option = gets.chomp 
+        puts "Enter new entry number"
+        @key = gets.chomp 
+        while @key.to_i < @menu_options.length + 1
+            puts "The entry number aleady exist"
+            puts "Please enter a number higher than #{@menu_options.length}"
+            @key = gets.chomp
+        end
+        @menu_options[@key] = @option 
+    end
 
    def view_all_entries
       address_book.entries.each do |entry|
@@ -69,10 +92,11 @@ class MenuController
         phone = gets.chomp
         print "Email: "
         email = gets.chomp
-        address_book.add_entry(name, phone, email)
+        @address = Entry.new(name, phone, email)
     
         system "clear"
         puts "New entry created"
+        puts @address
     end
  
    def search_entries
