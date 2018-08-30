@@ -20,14 +20,14 @@
         end
         
         def remove_entry(name, phone_number, email)
-        
-            index = 0
-            entries.each do |entry|
-              if name != entry.name
-                break
+            delete_entry = nil
+
+            @entries.each do |entry|
+              if name == entry.name && phone_number == entry.phone_number && email == entry.email
+                delete_entry = entry
               end
-              index += 1
-            end
-            entries.delete_at(index) 
+            end  
+            @entries.delete(delete_entry)
+              
         end
     end
