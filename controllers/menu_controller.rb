@@ -9,12 +9,13 @@ class MenuController
                         "2": "Create an entry",
                         "3": "Search for an entry",
                         "4": "Import entries from a CSV",
-                        "5": "Create new menu option",
+                        "5": "View Entry Number",
                         "6": "Exit"
                         
                     }
   end
-
+  
+  
   def main_menu
     puts "Main Menu - #{address_book.entries.count} entries"
     @menu_options.each do |key, value|
@@ -36,7 +37,7 @@ class MenuController
         when 3
             system "clear"
             search_entries
-            view_entry_number 
+            view_entry_by_number 
             main_menu
         when 4
             system "clear"
@@ -45,7 +46,7 @@ class MenuController
 
         when 5
             system "clear"
-            add_menu_option
+            view_entry_by_number
             main_menu  
         when 6
             puts "Good-bye!"
@@ -66,8 +67,8 @@ class MenuController
         puts "Enter new entry number"
         @key = gets.chomp 
         while @key.to_i < @menu_options.length + 1
-            puts "The entry number aleady exist"
-            puts "Please enter a number higher than #{@menu_options.length}"
+            puts "The entry number aleady exist" 
+            puts "Please enter a valid entry number #{@menu_options.length}"
             @key = gets.chomp
         end
         @menu_options[@key] = @option 
@@ -82,6 +83,24 @@ class MenuController
       system "clear"
       puts "End of entries"
     end
+
+    def view_entry_by_number
+        
+       puts  "What number would you like to view? Please note that the entries start with number 1"
+        n = gets.chomp.to_i
+       
+        if @address_book.entries.any?
+            if @address_book.entries[n - 1] != nil
+                puts @address_book.entries[n - 1]
+            else
+                puts "Invalid entry"
+                view_entry_by_number
+            end
+        else
+            puts "Invalid entry"
+            view_entry_by_number
+        end
+    end
  
    def create_entry
         system "clear"
@@ -92,11 +111,11 @@ class MenuController
         phone = gets.chomp
         print "Email: "
         email = gets.chomp
-        @address = Entry.new(name, phone, email)
+        @address_book.add_entry(name, phone, email)
     
         system "clear"
         puts "New entry created"
-        puts @address
+        puts @address_book.entries.last
     end
  
    def search_entries
@@ -115,6 +134,10 @@ class MenuController
  
         case selection
         when "n"
+           system "clear"
+           entry_submenu(entry)
+           view_entry_number 
+
         when "d"
         when "e"
         when "m"
