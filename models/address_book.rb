@@ -48,4 +48,19 @@ class AddressBook
       end
      return nil
     end
+
+    def iterative_search(name)
+        num = 0
+      while num <= (entries.length - 1)
+        if name == entries[num].name
+           return entries[num]
+        else
+          num += 1
+        end
+      end
+
+     return nil
+
+    end
+
 end
