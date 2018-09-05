@@ -10,8 +10,9 @@ class MenuController
                         "3": "Search for an entry",
                         "4": "Import entries from a CSV",
                         "5": "View Entry Number",
-                        "6": "Exit"
-                        
+                         "6": "Demolish",
+                        "7": "Exit"
+                       
                     }
   end
   
@@ -49,10 +50,16 @@ class MenuController
             view_entry_by_number
             main_menu  
         when 6
+            system "clear"
+            @address_book.demolish
+            puts "All entries have been deleted"
+            main_menu
+        when 7
             puts "Good-bye!"
             # #8
             exit(0)
-        # #9
+        
+
         else
             system "clear"
             puts "Sorry, that is not a valid input"
@@ -179,9 +186,9 @@ class MenuController
         end
     end
     def delete_entry(entry)
-     address_book.entries.delete(entry)
-     puts "#{entry.name} has been deleted"
-   end
+      address_book.entries.delete(entry)
+      puts "#{entry.name} has been deleted"
+    end
    def edit_entry(entry)
         print "Updated name: "
         name = gets.chomp
@@ -221,5 +228,8 @@ class MenuController
          puts entry.to_s
          search_submenu(entry)
         end
+   end
+   def demolish
+    @entries = []
    end
 end   

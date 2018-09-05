@@ -174,7 +174,7 @@ require_relative '../models/address_book'
     describe "#iterative_search" do
         it "searches AddressBook for a non-existent entry" do
           book.import_from_csv("entries.csv")
-          entry = book.binary_search("Dan")
+          entry = book.iterative_search("Dan")
           expect(entry).to be_nil
         end
 
@@ -217,4 +217,14 @@ require_relative '../models/address_book'
           expect(entry).to be_nil
         end
     end
+
+    #test demolish
+    describe "#demolish" do
+      it "should deletes all entries" do
+        book.add_entry("Sussie", "555-555-2036", "sussie@blocmail.com")
+        book.add_entry("Sussie", "555-555-2036", "sussie@blocmail.com")
+        book.demolish
+        expect(book.entries.size).to eq 0         
+      end
+    end  
 end
